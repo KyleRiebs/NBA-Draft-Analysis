@@ -1,0 +1,59 @@
+---
+title: "12_DataProcessing"
+author: "Kyle Riebeling"
+date: "2025-03-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+combine_and_player_stats <- read.csv("Data\\cleaned_combined_stats.csv")
+```
+
+## Add general position variable to cleaned data
+
+Since the NBA is moving closer to a position-less league, I created a more general position to separate the players for my analysis. Players who have small forward as either their primary or secondary position are labeled as "wings". Players who have a primary position of power forward or center are labeled as "bigs". The rest of the players are labeled as "guards". These values are saved into the data set as a new variable and the old position variable is deleted.
+
+```{r}
+#Create new position variable for more general "guard, "wing" and "big" labels
+newpos <- vector(mode = "character", length = length(combine_and_player_stats))
+count <- 1
+for(i in combine_and_player_stats$pos){
+  if(i == "PG" | i == "SG" | i == "SG-PG" | i == "PG-SG"){
+    newpos[count] <- "Guard"
+  }
+  if(i == "SF" | i == "SF-PF" | i == "PF-SF" | i == "SG-SF" | i == "SF-SG"){
+    newpos[count] <- "Wing"
+  }
+  if(i == "PF" | i == "C" | i == "PF-C" | i == "C-PF"){
+    newpos[count] <- "Big"
+  }
+  count <- count + 1
+}
+
+#Add new variable to dataframe
+combine_and_player_stats$genpos <- newpos
+
+#Delete old pos variable
+deletes <- c("pos")
+combine_and_player_stats <- combine_and_player_stats[, !(names(combine_and_player_stats) %in% deletes)]
+```
+
+
+## Rename variables
+
+The combine data set had inconsistent and confusing variable names, so I changed them to be easier to work with and understand what they represent.
+
+```{r}
+#Modify col names and save to data set
+new_names <- colnames(combine_and_player_stats)
+new_names[4] <- "wngspan_hgt"
+new_names[5] <- "jumping_reach"
+
+colnames(combine_and_player_stats) <- new_names
+
+#Save processed data
+write.csv(combine_and_player_stats, file = "Data\\processed_combined_stats.csv", row.names = F)
+```
+
+

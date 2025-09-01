@@ -1,0 +1,77 @@
+---
+title: "13_DataVisualization"
+author: "Kyle Riebeling"
+date: "2025-03-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("00_requirements.r")
+source("01_funct_DataCleaning.r")
+source("02_funct_DataVisualization.r")
+combined_stats <- read.csv("Data\\processed_combined_stats.csv", stringsAsFactors = T)
+```
+
+## Guards
+
+```{r}
+#Save a subset of only guards
+guards <- combined_stats[combined_stats$genpos == "Guard", ]
+
+#Sprint plot
+lm_plot(guards$sprint, guards, "3/4 Court Sprint Time (secs)", "Sprint Time vs Win Shares") 
+
+#Bench plot
+lm_plot(guards$bench, guards, "Bench Press Reps (185lbs)", "Bench Press Reps vs Win Shares")
+
+#Wingspan to Height plot
+lm_plot(guards$wngspan_hgt, guards, "Wingspan to Height Ratio", "Wingspan/Height vs Win Shares") 
+
+#jumping reach plot
+lm_plot(guards$jumping_reach, guards, "Max Jumping Reach (inches)", "Jumping Reach vs Win Shares")
+
+```
+
+## Wings
+
+```{r}
+#Save a subset of only Wings
+wings <- combined_stats[combined_stats$genpos == "Wing", ]
+
+#Sprint plot
+lm_plot(wings$sprint, wings, "3/4 Court Sprint Time (secs)", "Sprint Time vs Win Shares") 
+
+#Bench plot
+lm_plot(wings$bench, wings, "Bench Press Reps (185lbs)", "Bench Press Reps vs Win Shares")
+
+#Wingspan to Height plot
+lm_plot(wings$wngspan_hgt, wings, "Wingspan to Height Ratio", "Wingspan/Height vs Win Shares") 
+
+#jumping reach plot
+lm_plot(wings$jumping_reach, wings, "Max Jumping Reach (inches)", "Jumping Reach vs Win Shares")
+
+```
+
+
+## Bigs
+
+```{r}
+#Save a subset of only bigs
+bigs <- combined_stats[combined_stats$genpos == "Big", ]
+
+#Sprint plot
+lm_plot(bigs$sprint, bigs, "3/4 Court Sprint Time (secs)", "Sprint Time vs Win Shares") 
+
+#Bench plot
+lm_plot(bigs$bench, bigs, "Bench Press Reps (185lbs)", "Bench Press Reps vs Win Shares")
+
+#Wingspan to Height plot
+lm_plot(bigs$wngspan_hgt, bigs, "Wingspan to Height Ratio", "Wingspan/Height vs Win Shares") 
+
+#jumping reach plot
+lm_plot(bigs$jumping_reach, bigs, "Max Jumping Reach (inches)", "Jumping Reach vs Win Shares")
+
+```
+
+

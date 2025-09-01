@@ -1,0 +1,78 @@
+---
+title: "11_DataCleaning"
+author: "Kyle Riebeling"
+date: "3/12/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("00_requirements.r")
+source("01_funct_DataCleaning.r")
+```
+
+## Import Data
+
+```{r}
+#import from csv
+combine_stats <- read.csv("Data\\combine_stats.csv")
+player_stats <- read.csv("Data\\player_stats.csv")
+```
+
+
+## Make naming schemes match between data sets
+
+In order to match the players combine stats with their NBA stats, I will need to combine the data sets. To do this I will match the names from each data set. First, I need to change the combine stats data frame to display players names as "First Last". 
+
+```{r}
+#Remove comma
+combine_stats$PLAYER <- str_replace(combine_stats$PLAYER, ",", "")
+
+#Put first name first
+combine_names <- combine_stats$PLAYER
+combine_names <- str_split(combine_names, " ")
+
+for(i in 1:length(combine_names)){
+  combine_stats$PLAYER[i] <- paste(combine_names[[i]][2], combine_names[[i]][1])
+}
+```
+
+
+## Prep and combine both data sets
+
+Once the naming scheme matches, I sort both data frames by name and then combine them using merge()
+
+```{r}
+#Order them by name ascending
+combine_stats <- combine_stats[order(combine_stats$PLAYER),]
+player_stats <- player_stats[order(player_stats$player),]
+
+#Combine both datasets based on player name
+colnames(combine_stats) <- str_to_lower(colnames(combine_stats))
+combine_and_player_stats <- merge(combine_stats, player_stats, by = "player")
+```
+
+
+##Delete excess variables
+
+Now that all my data is in one data set, I'll delete any variables I won't be using for my analysis
+
+```{r}
+#Keep only useful variables
+keeps <- c("sprint", "bench", "bar", "pdhgt", 
+           "player", "pos", "overall_pick", "win_shares", "games")
+
+combine_and_player_stats <- combine_and_player_stats[, (names(combine_and_player_stats) %in% keeps)]
+
+#Remove any null data
+combine_and_player_stats <- remove_na(combine_and_player_stats)
+```
+
+
+## Save cleaned data
+
+```{r}
+write.csv(combine_and_player_stats, file = "Data\\cleaned_combined_stats.csv", row.names = F)
+```
+
+
