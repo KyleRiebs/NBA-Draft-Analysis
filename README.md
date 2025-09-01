@@ -1,4 +1,4 @@
-# README FOR NBA DRAFT COMBINE TO CAREER SUCCESS ANALYSIS
+# NBA DRAFT COMBINE TO CAREER SUCCESS ANALYSIS
 ## by Kyle Riebeling
 
 In the directory "\FinalProject_KyleRiebeling\" are the files needed to reproduce the analysis we preformed. You may also view the full analysis report in the pre-knitted "FinalReport_KYLE_RIEBELING.pdf" file.
